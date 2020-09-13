@@ -40,7 +40,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"startDate\": \"2020-07-14T20:00:00\",\n    \"origin\": {\n        \"station\": {\n            \"code\": \"S0001\"\n        }\n    },\n    \"destination\": {\n        \"station\": {\n            \"code\": \"S0002\"\n        }\n    },\n    \"bike\": {\n        \"code\": \"K0002\"\n    },\n    \"userId\": \"U0001\"\n}",
+					"raw": "{\n    \"startDate\": \"2020-09-12T20:00:00\",\n    \"origin\": {\n        \"station\": {\n            \"code\": \"S0001\"\n        }\n    },\n    \"destination\": {\n        \"station\": {\n            \"code\": \"S0002\"\n        }\n    },\n    \"bike\": {\n        \"code\": \"K0002\"\n    },\n    \"userId\": \"U0001\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -76,7 +76,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/bike-rental/flux/v1/rents/160",
+					"raw": "http://localhost:8080/bike-rental/flux/v1/rents/19",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -87,7 +87,36 @@
 						"flux",
 						"v1",
 						"rents",
-						"160"
+						"19"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "P3. Obtener Catalogo",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/bike-rental/flux/v1/catalog/S0003",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bike-rental",
+						"flux",
+						"v1",
+						"catalog",
+						"S0003"
 					]
 				}
 			},
