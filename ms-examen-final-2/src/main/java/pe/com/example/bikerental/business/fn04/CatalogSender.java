@@ -4,26 +4,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import pe.com.example.bikerental.models.api.fn02.request.CountBikeStation;
-import pe.com.example.bikerental.models.api.fn03.request.BikeRentalResponse;
-import pe.com.example.bikerental.models.api.fn03.request.RentalBikeRequest;
 import pe.com.example.bikerental.models.api.fn04.request.Bike;
 import pe.com.example.bikerental.models.api.fn04.request.CatalogResponse;
 import pe.com.example.bikerental.repository.mssql.BikeRepository;
 import pe.com.example.bikerental.repository.mssql.DetailStationRepository;
-import pe.com.example.bikerental.repository.mssql.StationRepository;
+import pe.com.example.bikerental.repository.mssql.StationDtoRepository;
 import pe.com.example.bikerental.thirdparty.mssql.BikeDto;
-import pe.com.example.bikerental.thirdparty.mssql.BookingDto;
-import pe.com.example.bikerental.thirdparty.mssql.DetailStationsDto;
 import pe.com.example.bikerental.thirdparty.mssql.StationDto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static pe.com.example.utils.Utils.getDatetimeSystem;
 
 @Component
 public final class CatalogSender {
@@ -34,7 +29,7 @@ public final class CatalogSender {
 
   private final DetailStationRepository detailStationRepository;
 
-  private final StationRepository stationRepository;
+  private final StationDtoRepository stationDtoRepository;
 
   private final EntityManager entityManager;
 
@@ -47,18 +42,18 @@ public final class CatalogSender {
   public CatalogSender(BikeRepository bikeRepository,
                        EntityManager entityManager,
                        DetailStationRepository detailStationRepository,
-                       StationRepository stationRepository) {
+                       StationDtoRepository stationDtoRepository) {
     this.bikeRepository = bikeRepository;
     this.entityManager = entityManager;
     this.detailStationRepository = detailStationRepository;
-    this.stationRepository = stationRepository;
+    this.stationDtoRepository = stationDtoRepository;
   }
 
   public Mono<CatalogResponse> getCatalogByStationId(String stationId) {
     return Mono.defer(() -> {
-      return Mono.fromCallable(() -> stationRepository.findById(stationId).orElse(null));
+      return Mono.fromCallable(() -> stationDtoRepository.findById(stationId).orElse(null));
     }).map(parseToResponse)
-        //.map(getListBikeByStation())
+        .map(getListBikeByStation())
         .doOnError((err) -> log.error("[Consult Bike Available for Station] error {}", err.getMessage()));
   }
 
@@ -66,13 +61,16 @@ public final class CatalogSender {
     return new CatalogResponse(sationDto.getStationId(), sationDto.getName(), sationDto.getLocation(), sationDto.getIsActive(), null);
   };
 
-/*
+
   private Function<CatalogResponse,CatalogResponse> getListBikeByStation() {
     return (dto) -> {
-      //List<DetailStationsDto> detailStationsDtoList =
-      Flux.fromIterable(detailStationRepository.findById(dto.getStationId()).stream().collect(Collectors.toList()))
-          .map(dtoBike -> bikeRepository.findById(dtoBike.getBikeId()))
-      return Mono.just(rentalRepository.save(dto));
+      List<Bike> listt = new ArrayList<Bike>();
+      listt.addAll((List<Bike>)entityManager
+          .createQuery("select b.bikeId, b.type, b.brand, b.priceByMinute, b.isActive from DetailStationsDto d join BikeDto b on b.bikeId = d.bikeId where d.stationId = ?1")
+          .setParameter(1, dto.getStationId())
+          .getResultList());
+      dto.setListBike(listt);
+      return dto;
     };
   };
 
@@ -81,7 +79,7 @@ public final class CatalogSender {
   };
 
 
-
+/*
   public Flux<List<CountBikeStation>> getBikeByStation() {
     return Flux.just((List<CountBikeStation>)entityManager
         .createQuery("select stationId, sum(quantity) as available from DetailStationsDto group by stationId")
