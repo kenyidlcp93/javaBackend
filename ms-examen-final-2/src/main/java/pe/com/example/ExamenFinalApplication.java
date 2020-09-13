@@ -14,15 +14,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 import pe.com.example.bikerental.repository.mongodb.StationRepository;
 import pe.com.example.bikerental.thirdparty.mongodb.StationDocument;
 import brave.sampler.Sampler;
 import brave.sampler.Sampler;
 
 @SpringBootApplication
-@EnableAutoConfiguration
 public class ExamenFinalApplication {
-  private static final Logger log = LoggerFactory.getLogger(MongoDbApplication.class);
+  private static final Logger log = LoggerFactory.getLogger(ExamenFinalApplication.class);
 
   public static void main(String[] args) {
     SpringApplication.run(ExamenFinalApplication.class, args);
