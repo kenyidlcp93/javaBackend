@@ -1,0 +1,107 @@
+[
+  {
+    "stationId": "S0001",
+    "bikes": [
+      {
+        "bikeId": "K0001",
+        "quantity": 7
+      },
+      {
+        "bikeId": "K0002",
+        "quantity": 8
+      },
+      {
+        "bikeId": "K0003",
+        "quantity": 2
+      },
+      {
+        "bikeId": "K0004",
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "stationId": "S0002",
+    "bikes": [
+      {
+        "bikeId": "K0001",
+        "quantity": 7
+      },
+      {
+        "bikeId": "K0002",
+        "quantity": 8
+      },
+      {
+        "bikeId": "K0003",
+        "quantity": 2
+      },
+      {
+        "bikeId": "K0004",
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "stationId": "S0003",
+    "bikes": [
+      {
+        "bikeId": "K0001",
+        "quantity": 7
+      },
+      {
+        "bikeId": "K0002",
+        "quantity": 8
+      },
+      {
+        "bikeId": "K0003",
+        "quantity": 2
+      },
+      {
+        "bikeId": "K0004",
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "stationId": "S0004",
+    "bikes": [
+      {
+        "bikeId": "K0001",
+        "quantity": 7
+      },
+      {
+        "bikeId": "K0002",
+        "quantity": 8
+      },
+      {
+        "bikeId": "K0003",
+        "quantity": 2
+      },
+      {
+        "bikeId": "K0004",
+        "quantity": 2
+      }
+    ]
+  },
+  {
+    "stationId": "S0005",
+    "bikes": [
+      {
+        "bikeId": "K0001",
+        "quantity": 7
+      },
+      {
+        "bikeId": "K0002",
+        "quantity": 8
+      },
+      {
+        "bikeId": "K0003",
+        "quantity": 2
+      },
+      {
+        "bikeId": "K0004",
+        "quantity": 2
+      }
+    ]
+  }
+]

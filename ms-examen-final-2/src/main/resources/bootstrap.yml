@@ -23,3 +23,10 @@ logging:
     org.springframework.data.redis: trace
     io.lettuce.core.protocol.DefaultEndpoint: trace
     io.lettuce.core.protocol.CommandEncoder: trace
+
+
+#Conexión hacia mongodb
+application:
+  mongodb:
+    connection-string: mongodb://oxner:sRTf9rQb5YlCVGAYCe8xPDi6v7YhGWJpjVl4vExmCRJ9wayjkglMvTAtG2ZjmUXoKlt6NnPrnJT4wQJtHGBMiA==@oxner.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@oxner@
+    database: OXNERDB
