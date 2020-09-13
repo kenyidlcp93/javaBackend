@@ -6,10 +6,7 @@ spring:
     #schema: classpath:scripts/schema-mssql.sql
     #data: classpath:scripts/data-mssql.sql
     name: BIKE_RENTAL
-    username: kenyidlcp
-    password: Javabackend2020
-    url: jdbc:sqlserver://srvazsqlexamen.database.windows.net:1433;database=azsqlexamen;user=kenyidlcp@srvazsqlexamen;password=Javabackend2020;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
   jpa:
     database-platform: org.hibernate.dialect.SQLServer2012Dialect
     show-sql: true
@@ -23,7 +20,6 @@ logging:
     org.springframework.data.redis: trace
     io.lettuce.core.protocol.DefaultEndpoint: trace
     io.lettuce.core.protocol.CommandEncoder: trace
-
 
 #Conexión hacia mongodb
 application:

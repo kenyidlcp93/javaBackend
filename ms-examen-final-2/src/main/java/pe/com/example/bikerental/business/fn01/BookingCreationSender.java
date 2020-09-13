@@ -14,6 +14,7 @@ import pe.com.example.bikerental.thirdparty.mssql.BookingDto;
 import reactor.core.publisher.Mono;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.function.Function;
 
 import static pe.com.example.utils.Utils.getDatetimeSystem;
@@ -34,9 +35,6 @@ public class BookingCreationSender {
 
   /**
    * method for create a new booking.
-   *
-   * @param payload request
-   * @throws SQLException exception
    */
   public Function<RentalBikeRequest, Mono<BikeRentalResponse>> createBookingAndDetails() {
     return (payload) -> {
@@ -62,8 +60,7 @@ public class BookingCreationSender {
       dtoDetail.setBookingId(rentalRepository.save(dto).getBookingId());
       dtoDetail.setOriginStationId(payload.getOrigin().getStation().getCode());
       dtoDetail.setDestinationStationId(payload.getDestination().getStation().getCode());
-      dtoDetail.setStartDate(getDatetimeSystem.get());
-      dtoDetail.setEndDate(getDatetimeSystem.get());
+      dtoDetail.setStartDate(LocalDateTime.parse(payload.getStartDate()));
       bookingDetailRepository.save(dtoDetail);
 
       return Mono.just(dto);
