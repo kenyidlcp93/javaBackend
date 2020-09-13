@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "d181e787-77e6-4c77-ba58-fa6fe0c4b64a",
+		"name": "Examen FInal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "P2. Bicicletas por estacion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/bike-rental/flux/v1/report",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bike-rental",
+						"flux",
+						"v1",
+						"report"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "P1. Registrar Renta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"startDate\": \"2020-07-14T20:00:00\",\n    \"origin\": {\n        \"station\": {\n            \"code\": \"S0001\"\n        }\n    },\n    \"destination\": {\n        \"station\": {\n            \"code\": \"S0002\"\n        }\n    },\n    \"bike\": {\n        \"code\": \"K0002\"\n    },\n    \"userId\": \"U0001\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/bike-rental/flux/v1/rents",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bike-rental",
+						"flux",
+						"v1",
+						"rents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "P1. Completar renta",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/bike-rental/flux/v1/rents/160",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bike-rental",
+						"flux",
+						"v1",
+						"rents",
+						"160"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
