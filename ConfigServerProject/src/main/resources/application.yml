@@ -1,0 +1,27 @@
+spring:
+  application:
+   name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          clone-on-start: true
+          uri: https://github.com/bvnqracm/SpringCloudConfig-GitRepository
+          skip-ssl-validation: true
+          #timeout: 9 #Se estable en segundos
+          username: bvnqracm
+          password: d9eb4a731b680aadf0439ce734faafd9f86ea376
+  security:
+    user:
+      name: apmsdev
+      password: samay
+
+  profiles:
+    active: dev
+server:
+  port: 8888
+
+logging:
+  level:
+    root: info
+    org.springframework.cloud.config: trace
