@@ -9,11 +9,11 @@ spring:
     #data: classpath:scripts/data-mssql.sql
     name: BIKE_RENTAL
 
-  jpa:
-    database-platform: org.hibernate.dialect.SQLServer2012Dialect
-    show-sql: true
-    hibernate:
-      ddl-auto: none
+  #jpa:
+    #  database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    #show-sql: true
+      #hibernate:
+    #ddl-auto: none
 
   cloud:
     config:
@@ -21,14 +21,14 @@ spring:
       uri: http://localhost:8888
   profiles.active: dev
 
-logging:
-  level:
-    org.springframework.jdbc.core.JdbcTemplate: trace
-    org.springframework.web.servlet.DispatcherServlet: trace
-    org.springframework.data.redis: trace
-    io.lettuce.core.protocol.DefaultEndpoint: trace
-    io.lettuce.core.protocol.CommandEncoder: trace
-    org.springframework.cloud: trace
+#logging:
+    #  level:
+    #org.springframework.jdbc.core.JdbcTemplate: trace
+    #org.springframework.web.servlet.DispatcherServlet: trace
+    #org.springframework.data.redis: trace
+    #io.lettuce.core.protocol.DefaultEndpoint: trace
+    #io.lettuce.core.protocol.CommandEncoder: trace
+  #org.springframework.cloud: trace
 
 #Conexión hacia mongodb
 application:
