@@ -1,3 +1,16 @@
+DOCKER
+===============
+//first, to generate .jar execute
+mvn clean compile package
+
+//second, to build docker image, go into ConfigServerProject folder and execute
+sudo docker build --tag examen-final:1.0 .
+
+//finally, to run docker image
+sudo docker run -p 8080:8080/tcp examen-final:1.0
+
+
+
 Spring y Redis
 ===============
 
