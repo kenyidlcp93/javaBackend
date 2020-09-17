@@ -4,12 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import pe.com.example.bikerental.business.fn11.BikeInventorySender;
+import pe.com.example.bikerental.business.fn13.RentalService;
 import pe.com.example.bikerental.repository.mssql.BikeRentalRepository;
 import pe.com.example.bikerental.repository.mssql.BookingDetailRepository;
+import pe.com.example.bikerental.thirdparty.mongodb.InventoryStatus;
 import pe.com.example.bikerental.thirdparty.mssql.BookingDetailDto;
 import pe.com.example.bikerental.thirdparty.mssql.BookingDto;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -23,14 +28,20 @@ public final class CompletionOrCancellationSender {
 
   private final BikeRentalRepository rentalRepository;
   private final BookingDetailRepository bookingDetailRepository;
+  private final RentalService rentalService;
+  private final BikeInventorySender inventorySender;
 
   /**
    * @param rentalRepository
    */
   public CompletionOrCancellationSender(BikeRentalRepository rentalRepository,
-                                        BookingDetailRepository bookingDetailRepository) {
+                                        BookingDetailRepository bookingDetailRepository,
+                                        RentalService rentalService,
+                                        BikeInventorySender inventorySender) {
     this.rentalRepository = rentalRepository;
     this.bookingDetailRepository = bookingDetailRepository;
+    this.rentalService = rentalService;
+    this.inventorySender = inventorySender;
   }
 
   /**
@@ -45,16 +56,21 @@ public final class CompletionOrCancellationSender {
    * @return Mono
    */
   public Mono<Void> completionOrCancellationRentalByRentId(Map<String, Object> rental) {
-    return Mono.defer(() -> {
-      Integer rentId = Integer.valueOf(rental.get("rentId").toString());
-      if (!checkBikeRentId.test(rentId)) {
-        return Mono.error(new Exception("[Bicycle RentId] not valid " + rentId));
-      }
-      return Mono.fromCallable(() -> rentalRepository.findById(rentId).orElse(null));
-    })
-        .flatMap(doingEndingOrCancellingRental()).then()
-        .doOnSuccess((success) -> log.info("[Ending Rental] :) successful!"))
-        .doOnError((err) -> log.error("[Ending Rental] :( error -> {}", err));
+
+    return completingBikeRental(Integer.valueOf(rental.get("rentId").toString()))
+            .flatMap(completingBikeRentalDetails()::apply)
+            .flatMap(detail -> inventorySender.updateInventory(detail, InventoryStatus.INCREMENT))
+            .then();
+
+  }
+
+  private Mono<BookingDto> completingBikeRental(int bikeRentId) {
+
+    return rentalService.getBikeRentalByBikeRentId(bikeRentId).flatMap(bikeRental -> {
+      bikeRental.setDateCompleted(LocalDateTime.now(ZoneId.of("America/Lima")));
+      bikeRental.setCompleted(true);
+      return Mono.just(rentalRepository.save(bikeRental));
+    });
   }
 
   /**
@@ -96,4 +112,15 @@ public final class CompletionOrCancellationSender {
     return (!ObjectUtils.isEmpty(id) && (id.intValue() > 0)) ? true : false;
   };
 
+  private Function<BookingDto, Mono<BookingDetailDto>> completingBikeRentalDetails() {
+    return (bikeRental) -> {
+      return Mono
+              .fromCallable(
+                      () -> bookingDetailRepository.findById(bikeRental.getBookingId()).orElse(new BookingDetailDto()))
+              .flatMap(detail -> {
+                detail.setEndDate(bikeRental.getDateCompleted());
+                return Mono.fromCallable(() -> bookingDetailRepository.save(detail));
+              });
+    };
+  }
 }
