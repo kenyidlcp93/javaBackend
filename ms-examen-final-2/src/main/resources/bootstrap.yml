@@ -3,32 +3,12 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: ms-flux-bike-rental
-  datasource:
-    initialization-mode: always
-    #schema: classpath:scripts/schema-mssql.sql
-    #data: classpath:scripts/data-mssql.sql
-    name: BIKE_RENTAL
-
-  #jpa:
-    #  database-platform: org.hibernate.dialect.SQLServer2012Dialect
-    #show-sql: true
-      #hibernate:
-    #ddl-auto: none
-
   cloud:
     config:
       allow-override: true
       uri: http://localhost:8888
   profiles.active: dev
 
-#logging:
-    #  level:
-    #org.springframework.jdbc.core.JdbcTemplate: trace
-    #org.springframework.web.servlet.DispatcherServlet: trace
-    #org.springframework.data.redis: trace
-    #io.lettuce.core.protocol.DefaultEndpoint: trace
-    #io.lettuce.core.protocol.CommandEncoder: trace
-  #org.springframework.cloud: trace
 
 #Conexión hacia mongodb
 application:

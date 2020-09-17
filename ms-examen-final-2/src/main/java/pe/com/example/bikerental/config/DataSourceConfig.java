@@ -12,10 +12,7 @@ public class DataSourceConfig {
   @Bean
   public DataSource getDataSource() {
     DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-    dataSourceBuilder.driverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
     dataSourceBuilder.url("jdbc:sqlserver://srvazsqlexamen.database.windows.net:1433;database=azsqlexamen;user=kenyidlcp@srvazsqlexamen;password=Javabackend2020;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;");
-    dataSourceBuilder.username("kenyidlcp");
-    dataSourceBuilder.password("Javabackend2020");
     return dataSourceBuilder.build();
   }
 

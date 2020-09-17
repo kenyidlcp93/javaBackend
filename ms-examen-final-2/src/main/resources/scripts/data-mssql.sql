@@ -69,16 +69,24 @@ INSERT INTO BCP.RENTALDETAILS(booking_id, origin_station_id, destination_station
 
 -- init load  table DetailStations
 INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
-  VALUES('S0001', 'K0001', 10, 1);
+  VALUES('S0001', 'K0001', 2, 1);
 INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
     VALUES('S0001', 'K0003', 8, 1);
 INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
-  VALUES('S0002', 'K0001', 50, 1);
+  VALUES('S0002', 'K0002', 3, 1);
 INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
-  VALUES('S0003', 'K0003', 30, 1);
+  VALUES('S0002', 'K0004', 4, 1);
 INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
-  VALUES('S0004', 'K0002', 20, 1);
+  VALUES('S0002', 'K0004', 3, 1);
 INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
-  VALUES('S0005', 'K0004', 5, 1);
+  VALUES('S0003', 'K0001', 5, 1);
+INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
+  VALUES('S0003', 'K0004', 5, 1);
+INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
+  VALUES('S0004', 'K0004', 10, 1);
+INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
+  VALUES('S0005', 'K0003', 5, 1);
+INSERT INTO BCP.DETAIL_STATIONS(station_id,bike_id,quantity,is_active)
+  VALUES('S0005', 'K0002', 5, 1);
 
 SET IDENTITY_INSERT BCP.Booking OFF;
