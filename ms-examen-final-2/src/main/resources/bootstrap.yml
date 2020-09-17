@@ -15,3 +15,18 @@ application:
   mongodb:
     connection-string: mongodb://oxner:sRTf9rQb5YlCVGAYCe8xPDi6v7YhGWJpjVl4vExmCRJ9wayjkglMvTAtG2ZjmUXoKlt6NnPrnJT4wQJtHGBMiA==@oxner.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@oxner@
     database: OXNERDB
+
+# Config access to KeyVault
+azure:
+  keyvault:
+    enabled: true
+    uri: 'https://keyvaultbackendjava.vault.azure.net/'
+    client-id: f43378af-9a81-47e2-969a-f58fa559b05d
+    tenant-id: d0a36512-10af-4562-833a-7d7f9d37c968
+    client-key: 92Aa0il1.UJ2a3f-__xXr3517eB6UxBp4Z
+##SubscriptionID: ddf000ae-639e-457c-8e2c-98e1d81032c0
+
+#uri:https://keyvaultbackendjava.vault.azure.net/
+# App Id: f43378af-9a81-47e2-969a-f58fa559b05d
+# Tenant Id: d0a36512-10af-4562-833a-7d7f9d37c968
+#Client key: 92Aa0il1.UJ2a3f-__xXr3517eB6UxBp4Z
