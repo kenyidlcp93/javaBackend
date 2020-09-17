@@ -12,6 +12,7 @@ import pe.com.example.bikerental.business.fn01.BookingService;
 import pe.com.example.bikerental.business.fn02.CompletionOrCancellationService;
 import pe.com.example.bikerental.business.fn04.CatalogService;
 import pe.com.example.bikerental.models.api.fn02.request.CountBikeStation;
+import pe.com.example.bikerental.models.api.fn03.request.BikeRentalResponse;
 import pe.com.example.bikerental.models.api.fn03.request.RentalBikeRequest;
 //import pe.com.example.bikerental.thirdparty.redis.HistoryStatus;
 //import pe.com.example.bikerental.thirdparty.redis.InteractionDto;
@@ -49,9 +50,9 @@ public class Controller {
   @PostMapping(value = "/rents", consumes = {MediaType.APPLICATION_JSON_VALUE},
       produces = {MediaType.APPLICATION_JSON_VALUE})
   @ResponseStatus(HttpStatus.CREATED)
-  public Mono<?> createBooking(@RequestBody RentalBikeRequest payload) throws Exception {
+  public Mono<BikeRentalResponse> createBooking(@RequestBody RentalBikeRequest payload) throws Exception {
     log.info("[starting create booking]");
-    return bookingService.createBikeRental().apply(payload);
+    return bookingService.createBikeRental(payload);
   }
 
   @PatchMapping(value = "/rents/{bookingId}", consumes = {MediaType.APPLICATION_JSON_VALUE},

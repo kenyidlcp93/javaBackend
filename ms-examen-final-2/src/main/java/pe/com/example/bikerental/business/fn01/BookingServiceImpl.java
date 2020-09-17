@@ -16,9 +16,9 @@ public class BookingServiceImpl implements BookingService {
     this.sender = sender;
   }
 
-  @Override
-  public Function<RentalBikeRequest, Mono<BikeRentalResponse>> createBikeRental() {
-    return (payload) -> sender.createBookingAndDetails().apply(payload);
-  }
 
+  @Override
+  public Mono<BikeRentalResponse> createBikeRental(RentalBikeRequest payload) {
+    return sender.createBookingAndDetails(payload);
+  }
 }

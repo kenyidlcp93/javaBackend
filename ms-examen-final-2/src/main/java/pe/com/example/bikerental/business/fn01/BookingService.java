@@ -11,6 +11,5 @@ import java.util.function.Function;
  */
 public interface BookingService {
 
-  Function<RentalBikeRequest, Mono<BikeRentalResponse>> createBikeRental();
-
+  Mono<BikeRentalResponse> createBikeRental(RentalBikeRequest payload);
 }
