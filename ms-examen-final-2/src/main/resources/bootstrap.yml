@@ -9,6 +9,8 @@ spring:
       allow-override: true
       uri: http://localhost:8888
   profiles.active: dev
+  jpa:
+    show-sql: true
 
 # Config access to KeyVault
 azure:

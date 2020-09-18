@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 import pe.com.example.bikerental.business.fn01.BookingCreationSender;
 
 import javax.sql.DataSource;
@@ -18,6 +21,8 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 @Configuration
+@EnableJpaRepositories(basePackages = "pe.com.example.bikerental.repository.mssql")
+@EnableReactiveMongoRepositories(basePackages = "pe.com.example.bikerental.repository.mongodb")
 public class DataSourceConfig {
 
   private static final org.slf4j.Logger log = LoggerFactory.getLogger(BookingCreationSender.class);
@@ -38,14 +43,19 @@ public class DataSourceConfig {
   }
 
   @Bean
-  public MongoClient mongoClient() {
-    log.info("[Mongo Connection String from KeyVault : {}]", mongoProperties.getConnectionstring());
-    CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
-    CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
-    return MongoClients.create(MongoClientSettings.builder()
-        .applyConnectionString(new ConnectionString(mongoProperties.getConnectionstring()))
-        .codecRegistry(codecRegistry)
-        .build());
+  public MongoClient getMongoClient() {
+    return MongoClients.create(new ConnectionString(mongoProperties.getConnectionstring()));
   }
 
+  /**
+   * método para exponer ReactiveMongoTemplate para el uso de ReactiveMongoOperations, capa
+   * personalizada para el aceceso de datos reactivos desde mongodb.
+   *
+   * @param properties lectura de datos desde el properties
+   * @return MongoTemplate
+   */
+  @Bean
+  public ReactiveMongoTemplate reactiveMongoTemplate(MongoProperties properties) {
+    return new ReactiveMongoTemplate(getMongoClient(), "OXNERDB");
+  }
 }

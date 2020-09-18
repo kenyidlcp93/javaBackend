@@ -3,6 +3,7 @@ package pe.com.example;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +24,22 @@ public class ExamenFinalApplication {
 
   @Bean
   CommandLineRunner preLoadMongo(StationRepository station) throws Exception {
+
     return args -> {
-      station.deleteAll();
+
+      List<StationDocument> documents2 = new ArrayList<>();
+      station.findAll().map(a -> documents2.add(a));
+
       ObjectMapper oMapper = new ObjectMapper();
       InputStream content = this.getClass().getResourceAsStream("/scripts/stations-init.json");
+
+      StationDocument stationDocument = new StationDocument();
+      stationDocument.setAvaiable("1");
+      stationDocument.setId("6");
+      stationDocument.setStationId("S0006");
+
+      station.save(stationDocument);
+
       List<StationDocument> documents =
           oMapper.readValue(content, new TypeReference<List<StationDocument>>() {
           });

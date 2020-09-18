@@ -46,25 +46,16 @@ public final class BikeInventorySender {
       if (bookingDetails == null) {
         return Mono.error(new Exception("Update Inventory, BookingDetails are null."));
       }
-      String bikeId = bikeRentalService.getBikeRentalByBikeRentId(bookingDetails.getBookingId()).block().getBikeId();
+
       String stationId = (InventoryStatus.DECREMENT.compareTo(status) == 0) ? bookingDetails.getOriginStationId()
           : bookingDetails.getDestinationStationId();
       return stationRepository.findByStationId(stationId)
-          .map(det -> {
-              det.setBikes(getBikeToModify(det, status, bikeId));
-              return det;
-          })
+              .map(det -> {
+                det.setAvaiable(String.valueOf(incrementOrDecrement().apply(Integer.parseInt(det.getAvaiable()), status)));
+                return det;
+              })
           .flatMap(stationRepository::save)
           .map(saved -> bookingDetails);
-    });
-  }
-
-  // @SuppressWarnings("unchecked")
-  private Collection<BikeVo> getBikeToModify(StationDocument stationDocument, InventoryStatus status, String bikeId) {
-    return Stream.of(stationDocument.getBikes()).reduce(new LinkedList<>(), (result, element) -> {
-      element.stream().filter((item) -> item.getBikeId().equals(bikeId))
-          .forEach(item -> item.setQuantity(incrementOrDecrement().apply(item.getQuantity(), status)));
-      return element;
     });
   }
 
