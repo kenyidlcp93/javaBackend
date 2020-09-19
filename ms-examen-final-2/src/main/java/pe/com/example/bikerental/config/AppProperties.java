@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class AppProperties {
 
-    @Value("${application.datasource.username}")
     private String user;
 
-    @Value("${application.datasource.password}")
     private String password;
 
     public String getUser() {
