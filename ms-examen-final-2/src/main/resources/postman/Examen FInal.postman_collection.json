@@ -76,7 +76,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:8080/bike-rental/flux/v1/rents/19",
+					"raw": "http://localhost:8080/bike-rental/flux/v1/rents/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -87,7 +87,7 @@
 						"flux",
 						"v1",
 						"rents",
-						"19"
+						"2"
 					]
 				}
 			},
