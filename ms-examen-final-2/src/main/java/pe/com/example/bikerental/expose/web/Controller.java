@@ -17,6 +17,7 @@ import pe.com.example.bikerental.models.api.fn03.request.RentalBikeRequest;
 //import pe.com.example.bikerental.thirdparty.redis.HistoryStatus;
 //import pe.com.example.bikerental.thirdparty.redis.InteractionDto;
 import pe.com.example.bikerental.models.api.fn04.request.CatalogResponse;
+import pe.com.example.bikerental.thirdparty.mongodb.StationDocument;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -43,7 +44,7 @@ public class Controller {
 
   @GetMapping(value = "/report", produces = {MediaType.APPLICATION_STREAM_JSON_VALUE})
   @ResponseStatus(HttpStatus.OK)
-  public Flux<List<CountBikeStation>> getcountBikeByStation() {
+  public Mono<List<StationDocument>> getcountBikeByStation() {
     return countBikeByStationService.countBikeByStation();
   }
 

@@ -5,8 +5,6 @@ import pe.com.example.bikerental.models.api.fn03.request.BikeRentalResponse;
 import pe.com.example.bikerental.models.api.fn03.request.RentalBikeRequest;
 import reactor.core.publisher.Mono;
 
-import java.util.function.Function;
-
 @Service
 public class BookingServiceImpl implements BookingService {
 
@@ -15,7 +13,6 @@ public class BookingServiceImpl implements BookingService {
   public BookingServiceImpl(final BookingCreationSender sender) {
     this.sender = sender;
   }
-
 
   @Override
   public Mono<BikeRentalResponse> createBikeRental(RentalBikeRequest payload) {

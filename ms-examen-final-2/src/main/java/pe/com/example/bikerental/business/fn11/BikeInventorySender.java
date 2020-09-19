@@ -1,18 +1,13 @@
 package pe.com.example.bikerental.business.fn11;
 
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.function.BiFunction;
-import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import pe.com.example.bikerental.business.fn13.RentalService;
 import pe.com.example.bikerental.repository.mongodb.StationRepository;
-import pe.com.example.bikerental.thirdparty.mongodb.BikeVo;
 import pe.com.example.bikerental.thirdparty.mongodb.InventoryStatus;
-import pe.com.example.bikerental.thirdparty.mongodb.StationDocument;
 
 import pe.com.example.bikerental.thirdparty.mssql.BookingDetailDto;
 import reactor.core.publisher.Mono;
