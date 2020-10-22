@@ -1,0 +1,1260 @@
+---
+openapi: "3.0.1"
+info:
+  title: "API BS Accounts V4"
+  description: "Servicio que gestiona las cuentas de un cliente."
+  version: "3.0.0"
+servers:
+- url: "/loans-deposits/account/v4"
+tags:
+- name: "Account"
+  description: "Account Controller"
+paths:
+  /accounts/{accountId}:
+    get:
+      tags:
+      - "Account Search"
+      summary: "Consulta del detalle de una Cuenta."
+      description: "### Acerca de la funcionalidad expuesta\n\n El servicio obtiene\
+        \ el detalle de una cuenta (Incluye los saldos).\n ### Data de Prueba\n  No\
+        \ Aplica. ## Path parameter = {accountId}\n\n ### URI de acceso a la API\n\
+        \  | M&eacute;todo | URI |\n|--------|-----|\n|GET| /loans-deposits/account/v4/accounts/{accountId}|\n\
+        \  ### Precondiciones para el consumo de esta versión de la API\n  Para el\
+        \ consumo de la  API, se debe elaborar los siguientes formatos:\n ### 1. Formato\
+        \ FCI\n ### STDA\n Crear el c&oacute;digo Mirror Transaction XY0O, donde XY\
+        \ es el c&oacute;digo de la aplicaci&oacute;n consumidora de 2 d&iacute;gitos.\n\
+        \ ### IMDS\n Crear el c&oacute;digo Mirror Transaction XY0P, donde XY es el\
+        \ c&oacute;digo de la aplicaci&oacute;n consumidora de 2 d&iacute;gitos.\n\
+        \ ### Para ambos Backends (STDA / IMDS)\n Si el canal tiene asociado un CICS\
+        \ deber&aacute;n utilizarlo para inscribir el Mirror Transaction, caso contrario\
+        \ los CICS a considerar para la creaci&oacute;n del c&oacute;digo son:\n -\
+        \ Desarrollo: A552CICS\n- Certificaci&oacute;n: A571CICS/A572CICS\n - Producci&oacute;n:\
+        \ A521CICS/A522CICS\n ### 2. Formato FAE\n Registrar en Rutinas Generales\
+        \ el c&oacute;digo de la aplicaci&oacute;n de 2 d&iacute;gitos que consumir&aacute;\
+        \ la interfaz STDA, IMDS.\n ### 3. Configuraci&oacute;n de Atlas Security\n\
+        \ #### Servicios de ZosConnect\n| Backend | M&eacute;todo | URI |\n|----|-----|-----|\n\
+        | STDA |POST| /syst/stda/v1.0.0|\n| IMDS |POST| /syst/imds/v1.0.0|\n ### Headers\
+        \ Requeridos\n| Header | Ejemplo |\n|--------|---------|\n| Request-ID | 550e8400-e29b-41d4-a716-446655440000\
+        \ |\n| app-code | BM |\n| app-name | CRM |\n| agency-code | 077 |\n| client-code\
+        \ | BM |\n| org-code | 1 |\n| guild-client | S |\n| opn-number | 00000001\
+        \ |\n| opn-code | 13 |\n| request-date | 2017-06-01T17:15:20.509-0400 |\n\
+        | caller-name | postman |\n| branch-office-code | 193 |\n| Authorization |\
+        \ Bearer 68b64fda-ec4d-4d8f-ac90-9cc410840808 |\n ### Query Parameters v&aacute;lidos\
+        \ en esta versi&oacute;n de la API\n| Query Param     | Tipo de Dato | Descripcion\
+        \       |\n |-----------------|--------------|-------------------|\n| extraFields\
+        \     | string       | Campos adicionales del recurso |\n  ### Usos válidos\
+        \ de Query Parameters\n No Aplica\n ### Variantes válidas del Payload (Cuerpo\
+        \ del mensaje)\n No Aplica\n ### Lista de Valores usadas en esta versión de\
+        \ la API\n| Atributo |\n|----------|\n| accounts.productDetail.currency |\n\
+        | accounts.productDetail.family |\n| accounts.productDetail.tioaux |\n| accounts.jointAccountType\
+        \ |\n| accounts.status |\n| accounts.accountBalances.balanceType |\n| accounts.renovationType\
+        \ |\n| accounts.accountClassifications.type |\n| accounts.fraudInsuranceType\
+        \ |\n| accounts.interestPayment.paymentType |\n| accounts.interestPayment.paymentTarget\
+        \ |\n| accounts.principalPayment. paymentForm |\n| accounts.principalPayment.disbursementProduct.family\
+        \ |\n ### Códigos de error usados en esta versión de la API\n| C&oacute;digo\
+        \ | Descripci&oacute;n |\n|--------|-------------|\n| TL0003 | Los datos proporcionados\
+        \ no son validos. |\n| TL0004 | El servicio no se encuentra disponible. Por\
+        \ favor reintente mas tarde. |\n| TL0005 | No se encontro el servidor solicitado.\
+        \ |\n| TL0007 | Ocurrio un error en el servicio externo. |\n| TL0009 | Ocurrio\
+        \ un error intentando invocar servicios externos. Por favor contactarse con\
+        \ el Soporte Tecnico. |\n| TL0011 | No esta autorizado correctamente para\
+        \ ejecutar esta operacion. |\n | TL9999 | Ocurrio un error inesperado. Por\
+        \ favor contactarse con el Soporte Tecnico. |\n"
+      operationId: "search"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "Token de Authorización"
+        required: true
+        schema:
+          type: "string"
+      - name: "Request-ID"
+        in: "header"
+        description: "Este campo es un valor estandar ya existente y sera usado como\
+          \ identificador."
+        required: true
+        schema:
+          maxLength: 36
+          pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[34][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$"
+          type: "string"
+          example: "550e8400-e29b-41d4-a716-446655440000"
+      - name: "request-date"
+        in: "header"
+        description: "Fecha de la petición"
+        required: true
+        schema:
+          maxLength: 29
+          type: "string"
+          format: "date-time"
+      - name: "app-code"
+        in: "header"
+        description: "Codigo de la aplicacion  que invoca el servicio. Se debe usar\
+          \    el codigo de 2 caracteres que tienen asignada las aplicaciones, puede\
+          \ ser    el canal."
+        required: true
+        schema:
+          maxLength: 2
+          minLength: 2
+          type: "string"
+      - name: "caller-name"
+        in: "header"
+        description: "Nombre de la API que realiza la invocacion al servicio."
+        required: true
+        schema:
+          maxLength: 100
+          minLength: 5
+          type: "string"
+      - name: "user-code"
+        in: "header"
+        description: "Codigo de usuario"
+        required: false
+        schema:
+          maxLength: 7
+          type: "string"
+      - name: "supervisor-code"
+        in: "header"
+        description: "Matricula del supervisor"
+        required: false
+        schema:
+          maxLength: 7
+          type: "string"
+      - name: "org-code"
+        in: "header"
+        description: "Codigo de la organizacion (1: BCP)"
+        required: false
+        schema:
+          maxLength: 1
+          minLength: 1
+          type: "string"
+      - name: "server-terminal"
+        in: "header"
+        description: "Identificador de terminal CICS (También denominado TETI)"
+        required: false
+        schema:
+          maxLength: 4
+          type: "string"
+      - name: "server-app"
+        in: "header"
+        description: "Identificador de terminal para la aplicacion cliente. Ya sea\
+          \ de canal de    ventanilla o ATM manejan su propio identificador."
+        required: false
+        schema:
+          maxLength: 15
+          type: "string"
+      - name: "branch-office-code"
+        in: "header"
+        description: "Codigo de sucursal en la que se realiza la operacion tanto fisica\
+          \ como    virtual."
+        required: false
+        schema:
+          maxLength: 3
+          type: "string"
+      - name: "agency-code"
+        in: "header"
+        description: "Codigo de la agencia"
+        required: false
+        schema:
+          maxLength: 3
+          type: "string"
+      - name: "app-name"
+        in: "header"
+        description: "Nombre descriptivo de la aplicacion."
+        required: false
+        schema:
+          maxLength: 15
+          type: "string"
+      - name: "opn-code"
+        in: "header"
+        description: "Identificador de la operacion de negocio, esta ligado al usuario"
+        required: false
+        schema:
+          maxLength: 50
+          type: "string"
+      - name: "opn-number"
+        in: "header"
+        description: "Numero de Operacion: Identificador que representa una operacion.\
+          \ Este dato es generado por canal y consta de 8 digitos."
+        required: false
+        schema:
+          maxLength: 8
+          type: "string"
+      - name: "opn-reverse-number"
+        in: "header"
+        description: "Numero de la operacion que se desea revertir"
+        required: false
+        schema:
+          maxLength: 8
+          type: "string"
+      - name: "client-code"
+        in: "header"
+        description: "Identificador de Canal: Canal configurado del cual se almacenara\
+          \ la auditoria."
+        required: false
+        schema:
+          maxLength: 10
+          type: "string"
+      - name: "guild-client"
+        in: "header"
+        description: "Indica si es cliente Gremio o no. S = Si, N = No  (Ej. XXX)."
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          pattern: "^(S|N)$"
+          type: "string"
+      - name: "authserver"
+        in: "header"
+        description: "Indica el Tipo de Token que envía el Servicio Api Management\
+          \ (Ej. XXX)."
+        required: false
+        style: "simple"
+        explode: false
+        schema:
+          type: "string"
+      - name: "risk_analize_online"
+        in: "header"
+        description: "Información enviada desde el canal para Lynx (Ej. XXX)."
+        required: false
+        style: "simple"
+        explode: false
+        schema:
+          type: "string"
+      - name: "Cache-Control"
+        in: "header"
+        description: "Cache enviada desde el canal (Ej. XXX)."
+        required: false
+        style: "simple"
+        explode: false
+        schema:
+          type: "string"
+          example: "no-cache, no-store, must-revalidate"
+      - name: "accountId"
+        in: "path"
+        description: "Numero de producto (cuenta) a consultar (Ej. XXX)."
+        required: true
+        style: "simple"
+        explode: false
+        schema:
+          maxLength: 20
+          minLength: 20
+          pattern: "\\d+"
+          type: "string"
+        example: 19100109502007004
+      - name: "extraFields"
+        in: "query"
+        description: "Campos adicionales del recurso separados por coma (Ej. XXX)."
+        required: false
+        style: "form"
+        explode: true
+        schema:
+          maxLength: 80
+          minLength: 0
+          type: "string"
+          description: "Campos adicionales del recurso separados por coma"
+          example: "depositQuantityInformation"
+        example: "depositQuantityInformation, flagConsBasicaSaldos"
+      responses:
+        200:
+          description: "La peticion se proceso correctamente."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountSearchResponse"
+        400:
+          description: "El cliente envi&oacute; datos incorrectos."
+          content:
+            application/stream+json:
+              schema:
+                $ref: "#/components/schemas/ApiException"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiException"
+        404:
+          description: "No se encontr&oacute; el recurso solicitado."
+          content:
+            application/stream+json:
+              schema:
+                $ref: "#/components/schemas/ApiException"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiException"
+        500:
+          description: "Error al intentar actualizar el recurso."
+          content:
+            application/stream+json:
+              schema:
+                $ref: "#/components/schemas/ApiException"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiException"
+        503:
+          description: "El servicio no se encontra disponible."
+          content:
+            application/stream+json:
+              schema:
+                $ref: "#/components/schemas/ApiException"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiException"
+      x-atlas-header:
+        $ref: "#/components/schemas/AccountHeaders"
+components:
+  schemas:
+    AccountHeaders:
+      type: "object"
+    AccountSearchResponse:
+      required:
+      - "accountClassifications"
+      type: "object"
+      properties:
+        accountId:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "N&uacute;mero de cuenta comercial."
+          example: "19100109502007004"
+        formattedAccountNumber:
+          maxLength: 22
+          minLength: 0
+          type: "string"
+          description: "N&uacute;mero de cuenta comercial editado."
+          example: "191-00109502-0-07"
+        accountNumber:
+          maxLength: 14
+          minLength: 13
+          type: "string"
+          description: "N&uacute;mero de cuenta comercial sin editar."
+          example: "19100109502007"
+        cci:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Codigo de cuenta interbancario para el Per&uacute;."
+          example: "225010919303912992"
+        productDetail:
+          $ref: "#/components/schemas/ProductDetail"
+        accountHolder:
+          $ref: "#/components/schemas/AccountHolderSearch"
+        employer:
+          $ref: "#/components/schemas/Employer"
+        bankingSegment:
+          $ref: "#/components/schemas/BankingSegment"
+        status:
+          $ref: "#/components/schemas/Status"
+        salaryAccount:
+          type: "boolean"
+          description: "Indica si es una cuenta sueldo."
+          example: true
+        accountBalances:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AccountBalance"
+        term:
+          $ref: "#/components/schemas/Term"
+        accountOfficer:
+          $ref: "#/components/schemas/AccountOfficer"
+        openingDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha de apertura de la cuenta."
+          example: "1997-07-24"
+        maturityDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha de vencimiento de la cuenta."
+          example: "2009-10-23"
+        openingAgency:
+          $ref: "#/components/schemas/OpeningAgency"
+        blockingDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha de bloqueo/desbloqueo"
+          example: "2008-09-04"
+        blockingStatus:
+          $ref: "#/components/schemas/BlockingStatus"
+        blockingSourceReference:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Usuario, Cod. Sucursal o Aplicativo de bloqueo/desbloqueo."
+          example: "RENOVACION AUTOMATIC"
+        customerNotificationType:
+          $ref: "#/components/schemas/CustomerNotificationType"
+        penaltyType:
+          $ref: "#/components/schemas/PenaltyType"
+        chargedFeeAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Comisi&oacute;n que se va cobrando por la cuenta hasta el\
+            \ a&ntilde;o."
+          example: 58041.36
+        outstandingFeeAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Comisi&oacute;n pendiente de cobro."
+          example: 58041.36
+        accruedItfChargedOnDayAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Total del ITF cobrado a la cuenta en el d&iacute;a."
+          example: 41.36
+        closingReason:
+          $ref: "#/components/schemas/ClosingReason"
+        accruedInterestAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Monto de interes acreedor pagadero a la fecha."
+          example: 58041.36
+        blockingOffice:
+          $ref: "#/components/schemas/BlockingOffice"
+        initialPrincipalAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "El dep&oacute;sito inicial de cualquier cuenta."
+          example: 8916.82
+        bscCalificationType:
+          $ref: "#/components/schemas/BscCalificationType"
+        accountClassifications:
+          type: "array"
+          description: "Lista de tipos de clasificaci&oacute;n de la cuenta. Cantidad\
+            \ m&iacute;nima y m&aacute;xima de 3 elementos."
+          items:
+            $ref: "#/components/schemas/AccountSearchClassification"
+        fraudInsuranceType:
+          $ref: "#/components/schemas/FraudInsuranceTypeSearch"
+        employeeAccountType:
+          $ref: "#/components/schemas/EmployeeAccountType"
+        monthlyProjectedInterestAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Inter&eacute;s usado para reportes."
+          example: 5.85
+        payedInterestNonCapitalizedAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Inter&eacute;s pagado que todav&iacute;a no se capitaliza."
+          example: 0
+        projectedInterestAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Inter&eacute;s proyectado de una cuenta a la fecha o al vencimiento."
+          example: 5.85
+        accountStatementMediaType:
+          $ref: "#/components/schemas/AccountStatementMediaType"
+        interestPayment:
+          $ref: "#/components/schemas/InterestPayment"
+        annualPayedInterestAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Importe del inter&eacute;s pagado en el a&ntilde;o."
+          example: 1398.5
+        principalPayment:
+          $ref: "#/components/schemas/PrincipalPayment"
+        hasMonthEnd:
+          type: "boolean"
+          description: "Flag de cierre en el mes."
+          example: true
+        hasDayEnd:
+          type: "boolean"
+          description: "Flag de cierre de d&iacute;a."
+          example: true
+        igvTaxCharge:
+          type: "boolean"
+          description: "Flag cobro de IGV."
+          example: true
+        itfTaxCharge:
+          type: "boolean"
+          description: "Indica que la cuenta ser&aacute; inafecto al ITF como las\
+            \ cuentas de Gobierno."
+          example: true
+        hasFullCustodial:
+          type: "boolean"
+          description: "Flag de full custodia."
+          example: true
+        hasFullRetention:
+          type: "boolean"
+          description: "Flag de retenci&oacute;n full."
+          example: true
+        vipAccount:
+          type: "boolean"
+          description: "Indicador si la cuenta es VIP."
+          example: true
+        debtCollection:
+          type: "boolean"
+          description: "Indica si la cuenta esta afiliada al servicio de recaudacion."
+          example: true
+        receiveInterest:
+          type: "string"
+          description: "Indica si la cuenta paga interes."
+          example: "true"
+        custodialAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Importe de la custodia."
+          example: 0
+        retentionAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Importe de la retenci&oacute;n."
+          example: 505.87
+        dailyAccruedInterestAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Inter&eacute;s acumulado y no pagado."
+          example: 0.0972
+        accruedCashInAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Monto total de dep&oacute;sitos realizados a la fecha."
+          example: 2469.99
+        accruedReceivedInterestAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Total de intereses recibido a la fecha."
+          example: 308.31
+        accruedCashOutAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Total de retiros realizado a la fecha."
+          example: 1639.64
+        overdraftLineAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Linea de sobregiro con que la se inicia el dia o la que se\
+            \ actualiza por batch."
+          example: 123
+        overdraftStartDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha cuando el sobregiro ser&aacute; efectivo."
+          example: "2011-10-01"
+        overdraftEndDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha hasta cuando ser&aacute; efectivo el sobregiro."
+          example: "2011-10-02"
+        checkbookInformation:
+          $ref: "#/components/schemas/CheckbookInformation"
+        accruedOverdraftInterestAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Intereses deudores acumulados a la fecha."
+          example: 1.25
+        overdraftOnlineFeeAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Importe del sobregiro on-line."
+          example: 321.54
+        accruedRetentionsAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Importe acumulado de retenciones."
+          example: 321.54
+        dailyRetentionsAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Importe de las retenciones del d&iacute;a."
+          example: 123.22
+        initialDayRetentionAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Importe de las retenciones con que se comienza el d&iacute;a."
+          example: 412.01
+        accruedOfficerAutorizationAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Importe de las consultas en el d&iacute;a al sectorista pendiente\
+            \ por responder."
+          example: 5412
+        pendingOfficerAutorizationQuantity:
+          maximum: 15
+          minimum: 0
+          type: "integer"
+          description: "N&uacute;mero de consultas pendientes por responder en el\
+            \ d&iacute;a."
+          format: "int32"
+          example: 2
+        annualInterestRate:
+          maximum: 12
+          minimum: 0
+          type: "number"
+          description: "Tasa anual de rentabilidad."
+          example: 2
+        freezeInterestRate:
+          maximum: 12
+          minimum: 0
+          type: "number"
+          description: "Porcentaje del interes que se congelara."
+          example: 2
+        passiveRateType:
+          $ref: "#/components/schemas/PassiveRateType"
+        accountRates:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/AccountRate"
+        lastUpdateSegmentDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha de &uacute;ltima actualizaci&oacute;n del segmento."
+          example: "2010-05-12"
+        lastUpdateLineDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha de &uacute;ltima actualizaci&oacute;n de la Linea."
+          example: "2010-05-12"
+        lastSegmentInformationUpdateOfficer:
+          maxLength: 7
+          minLength: 0
+          type: "string"
+          description: "Usuario de la ultima actualizaci&oacute;n del segmento."
+          example: "OS00884"
+        lastLineInformationUpdateOfficer:
+          maxLength: 7
+          minLength: 0
+          type: "string"
+          description: "Usuario de la ultima actualizaci&oacute;n de la linea."
+          example: "OS00884"
+        lastOperationDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Ultimo Back-date."
+          example: "2008-09-08"
+        lastFinantialOperationDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha de &uacute;ltima operaci&oacute;n monetaria."
+          example: "2009-08-31"
+        lastRenovationDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "La &uacute;ltima fecha que se renov&oacute; la cuenta."
+          example: "2009-08-24"
+        renovationQuantity:
+          maxLength: 15
+          minLength: 0
+          type: "string"
+          description: "Es el n&uacute;mero de renovaciones que tiene la Cta a Plazo\
+            \ o CB."
+          example: "40"
+        renovationType:
+          $ref: "#/components/schemas/RenovationType"
+        depositQuantityInformation:
+          $ref: "#/components/schemas/DepositQuantityInformation"
+    ProductDetail:
+      type: "object"
+      properties:
+        currency:
+          $ref: "#/components/schemas/CurrencySearch"
+        family:
+          $ref: "#/components/schemas/ProductFamily"
+        tioaux:
+          $ref: "#/components/schemas/TioAux"
+    CurrencySearch:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "C&oacute;digo de moneda."
+          example: "PEN"
+        description:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n de la moneda."
+          example: "SOLES"
+      description: "Clase que almacenar&aacute; la moneda"
+    ProductFamily:
+      type: "object"
+      properties:
+        code:
+          maxLength: 3
+          minLength: 0
+          type: "string"
+          description: "C&oacute;digo de familia seg&uacute;n clasificaci&oacute;n\
+            \ estandar."
+          example: "005"
+    TioAux:
+      type: "object"
+      properties:
+        code:
+          maxLength: 6
+          minLength: 0
+          type: "string"
+          description: "El codigo de TioAux."
+          example: "AHOAHC"
+    AccountHolderSearch:
+      type: "object"
+      properties:
+        fullName:
+          maxLength: 40
+          minLength: 0
+          type: "string"
+          description: "Nombre del titular de la cuenta."
+          example: "CAJA RURAL DE AHORRO Y CREDITO CAMANA"
+        cic:
+          maxLength: 12
+          minLength: 0
+          type: "string"
+          description: "CIC del cliente."
+          example: "6813405.0"
+        bankingSegment:
+          $ref: "#/components/schemas/AccountHolderBankingSegment"
+        addresses:
+          $ref: "#/components/schemas/Addresses"
+    AccountHolderBankingSegment:
+      type: "object"
+      properties:
+        code:
+          maxLength: 2
+          minLength: 0
+          type: "string"
+          description: "Banca a la que pertenece el cliente."
+          example: "BP"
+    Addresses:
+      type: "object"
+      properties:
+        typeCode:
+          type: "string"
+          description: "Direcci&oacute;n de correspondencia del titular de la cuenta."
+          example: "CORRESPONDENCIA"
+        summary:
+          maxLength: 40
+          minLength: 0
+          type: "string"
+          description: "Direcci&oacute;n."
+          example: "CALLE SAN JOSE NE110  287100  201091 FAX"
+    Employer:
+      type: "object"
+      properties:
+        personId:
+          maxLength: 16
+          minLength: 0
+          type: "string"
+          description: "Identificador de la persona."
+          example: "0000100047646000"
+        additionalInformation:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "C&oacute;digo de la planilla del pago de haberes."
+          example: "Z"
+    BankingSegment:
+      type: "object"
+      properties:
+        code:
+          maxLength: 2
+          minLength: 0
+          type: "string"
+          description: "Segmento a la que pertenece la cuenta."
+          example: "A"
+    Status:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Estado de la cuenta."
+          example: "00"
+        description:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n del estado de la cuenta."
+          example: "ACTIVA"
+    AccountBalance:
+      type: "object"
+      properties:
+        balanceAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Monto del saldo correspondiente al tipo de balance."
+          example: 58041.36
+        balanceType:
+          $ref: "#/components/schemas/BalanceType"
+    BalanceType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripcion del Saldo a mostrar."
+          example: "Disponible"
+    Term:
+      type: "object"
+      properties:
+        value:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Plazo. Indica en cantidad de d&iacute;as de la cuenta a Plazo."
+          example: "60"
+        unit:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Tipo de plazo."
+          example: "D"
+    AccountOfficer:
+      type: "object"
+      properties:
+        value:
+          maxLength: 7
+          minLength: 0
+          type: "string"
+          description: "C&oacute;digo de sectorista."
+          example: "25050"
+    OpeningAgency:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Oficina donde se apertur&oacute; la cuenta."
+          example: "000"
+    BlockingStatus:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "C&oacute;digo de bloqueo."
+          example: "EMA"
+        description:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n del tipo de bloqueo."
+          example: "EMANCIPADO"
+    CustomerNotificationType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Indicador la emisi&oacute;n de notificaci&oacute;n de vencimiento."
+          example: "0"
+        description:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n de la emision de notificaci&oacute;n de\
+            \ vencimiento."
+          example: "NOTIFICACION X RENOV"
+    PenaltyType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Tipo de penalidad."
+          example: "2"
+        description:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n de tipo de penalidad."
+          example: "PIERDE DIAS"
+    ClosingReason:
+      type: "object"
+      properties:
+        code:
+          maxLength: 2
+          minLength: 0
+          type: "string"
+          description: "Motivo por el cual una cuenta a sido cerrada."
+          example: "15"
+        description:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n del motivo del cierre."
+          example: "VOLUNTAD PROPIA"
+    BlockingOffice:
+      type: "object"
+      properties:
+        code:
+          maxLength: 3
+          minLength: 0
+          type: "string"
+          description: "C&oacute;digo de la oficina donde se bloquea, cierra o se\
+            \ desbloquea ."
+          example: "215"
+    BscCalificationType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Califaci&oacute;n BSC a la cuenta."
+          example: "DA"
+    AccountSearchClassification:
+      type: "object"
+      properties:
+        number:
+          maxLength: 1
+          minLength: 0
+          type: "string"
+          description: "N&uacute;mero de clasificaci&oacute;n de la cuenta."
+          example: "3"
+        type:
+          $ref: "#/components/schemas/AccountClasificationType"
+      description: "Lista de tipos de clasificaci&oacute;n de la cuenta. Cantidad\
+        \ m&iacute;nima y m&aacute;xima de 3 elementos."
+    AccountClasificationType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Codigo de clasificaci&oacute;n de la cuenta."
+          example: "101"
+        description:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n de la clasificaci&oacute;n de la cuenta."
+          example: "JURID.FINES DE LUCRO"
+    FraudInsuranceTypeSearch:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n de tipo de seguro."
+          example: "0"
+        description:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n de tipo de seguro."
+          example: "SIN SEGURO"
+    EmployeeAccountType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Tipo de cuenta de empleado."
+          example: "1"
+    AccountStatementMediaType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Medio para el env&iacute;o de estado de la cuenta."
+          example: "A"
+    InterestPayment:
+      type: "object"
+      properties:
+        paymentDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha de pago de intereses."
+          example: "2009-10-23"
+        paymentType:
+          $ref: "#/components/schemas/PaymentType"
+        nextPaymentDate:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Fecha siguiente pago de intereses de acuerdo al periodo de\
+            \ la cta. a Plazo o CB."
+          example: "2009-10-23"
+        paymentTarget:
+          $ref: "#/components/schemas/PaymentTarget"
+        disbursementProduct:
+          $ref: "#/components/schemas/InterestDisbursementProduct"
+    PaymentType:
+      type: "object"
+      properties:
+        code:
+          type: "string"
+          description: "Indica el c&oacute;digo del tipo de pago. "
+          example: "3"
+        description:
+          type: "string"
+          description: "Indica la descripci&oacute;n del tipo de pago. "
+          example: "CADA 30 DIAS"
+    PaymentTarget:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Forma de distribuci&oacute;n del interes."
+          example: "0"
+          enum:
+          - "0, 1"
+        description:
+          maxLength: 30
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n de la forma de distribuci&oacute;n del\
+            \ interes."
+          example: "DEPOSITO EN LA MISMA CUENTA"
+    InterestDisbursementProduct:
+      type: "object"
+      properties:
+        productNumber:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Linea de sobregiro."
+          example: "19100010000010"
+        family:
+          $ref: "#/components/schemas/InterestDisbursementProductFamily"
+    InterestDisbursementProductFamily:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Tipo de Cta. Afil. 2."
+          example: "ST"
+    PrincipalPayment:
+      type: "object"
+      properties:
+        paymentForm:
+          $ref: "#/components/schemas/PrincipalPaymentForm"
+        disbursementProduct:
+          $ref: "#/components/schemas/PrincipalDisbursementProduct"
+    PrincipalPaymentForm:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "C&oacute;digo que indica forma pago del capital."
+          example: "0"
+        description:
+          maxLength: 30
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n de la forma  de pago  del capital."
+          example: "ABONO DE INTERESES"
+    PrincipalDisbursementProduct:
+      type: "object"
+      properties:
+        productNumber:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Cuenta afiliada 3."
+          example: "1931521748646"
+        family:
+          $ref: "#/components/schemas/PrincipalDisbursementProductFamily"
+    PrincipalDisbursementProductFamily:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Tipo de Cta. Afil."
+          example: "ST"
+    CheckbookInformation:
+      type: "object"
+      properties:
+        repositionType:
+          $ref: "#/components/schemas/RepositionType"
+        depositAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Es el monto depositado con cheques en el d&iacute;a."
+          example: 1236
+        creditLineAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Importe de linea de cr&eacute;dito para cheques recibidos."
+          example: 124.1
+        protestedQuantity:
+          maximum: 4
+          minimum: 0
+          type: "integer"
+          description: "N&uacute;mero de cheques protestados."
+          format: "int32"
+          example: 0
+        deniedQuantity:
+          maximum: 4
+          minimum: 0
+          type: "integer"
+          description: "N&uacute;mero de cheques rechazados."
+          format: "int32"
+          example: 0
+        internationalCashAmount:
+          maximum: 20.0
+          minimum: 0
+          type: "number"
+          description: "Monto disponible para depositos con cheques del exterior."
+          example: 12.12
+    RepositionType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Indicador si la cuenta puede hacer reposicion de chequeras."
+          example: "0"
+        description:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n del indicador; si la cuenta puede hacer\
+            \ resposici&oacute;n de chequeras."
+          example: "SIN BLOQUEO"
+    PassiveRateType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 1
+          minLength: 0
+          type: "string"
+          description: "Tipo de Tasa Pasiva."
+          example: "S"
+    AccountRate:
+      type: "object"
+      properties:
+        value:
+          maximum: 12
+          minimum: 0
+          type: "number"
+          description: "Valor asociado al tipo de tasa indicado en el campo c&oacute;digo\
+            \ ."
+          example: 0
+        type:
+          $ref: "#/components/schemas/AccountRateType"
+    AccountRateType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 10
+          minLength: 0
+          type: "string"
+          description: "Tipo de Tasa del Arreglo."
+          example: " Pasiva"
+    RenovationType:
+      type: "object"
+      properties:
+        code:
+          maxLength: 4
+          minLength: 0
+          type: "string"
+          description: "Es el tipo de renovaci&oacute;n de una Cta a Plz o CBE."
+          example: "0"
+        description:
+          maxLength: 20
+          minLength: 0
+          type: "string"
+          description: "Descripci&oacute;n del tipo de renovaci&oacute;n."
+          example: "RENOVACION AUTOMATICA"
+    DepositQuantityInformation:
+      type: "object"
+      properties:
+        accruedDailyDepositQuantity:
+          type: "integer"
+          description: "Cantidad de depositos en el dia."
+          format: "int64"
+          example: 17
+        totalAccruedDepositQuantity:
+          type: "integer"
+          description: "Cantidad de depositos acumulados de la cuenta."
+          format: "int64"
+          example: 100
+    ApiException:
+      title: "ApiException"
+      type: "object"
+      properties:
+        code:
+          type: "string"
+          description: "Codigo de error de Sistema"
+          example: "TL0001"
+        description:
+          type: "string"
+          description: "Descripcion del error de Sistema"
+          example: "Error al llamar al servicio"
+        errorType:
+          type: "string"
+          description: "Tipo de Error de Sistema"
+          example: "TECHNICAL"
+        exceptionDetails:
+          type: "array"
+          description: "Lista de detalles del error"
+          items:
+            $ref: "#/components/schemas/ApiExceptionDetail"
+        properties:
+          type: "object"
+          properties: {}
+          description: "Lista de propiedades especiales."
+      description: "Datos del error de sistema."
+    ApiExceptionDetail:
+      title: "ApiExceptionDetail"
+      type: "object"
+      properties:
+        code:
+          type: "string"
+          description: "Codigo de error del Detalle/Proveedor"
+          example: "MB0008"
+        component:
+          type: "string"
+          description: "Nombre del componente de falla"
+          example: "MB.CardInqV2"
+        description:
+          type: "string"
+          description: "Descripcion del Detalle"
+          example: "Codigo invalido para el canal"
+      description: "Datos del error técnico."
+x-bcp-api-type: "BS"
